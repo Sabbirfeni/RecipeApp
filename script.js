@@ -1,9 +1,14 @@
 let searchBtn = document.getElementById('search-btn');
+let searchField = document.querySelector('.search-control');
 let mealListContainer = document.getElementById('meal');
 let mealDetailsContainer = document.getElementById('mealDetailContainer');
 let detailCloseBtn = document.getElementById('recipe-close-btn');
 
-searchBtn.addEventListener('click', getMealList);
+searchField.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') {
+        getMealList()
+    }
+});
 mealListContainer.addEventListener('click', getMealDetails);
 
 function getMealList() {
@@ -34,6 +39,7 @@ function getMealList() {
 
 function getMealDetails(e) {
     e.preventDefault();
+    document.body.style.overflow = 'hidden'
     if(e.target.classList.contains('recipe-btn')) {
         let mealItem = e.target.parentElement.parentElement;
 
@@ -49,16 +55,22 @@ function showDetails(meal) {
     meal = meal[0];
     console.log(meal)
     let html = `
-        <h2 class = "recipe-title">${meal.strMeal}</h2>
-        <p class = "recipe-category">${meal.strCategory}</p>
+            <div class = "recipe-meal-img">
+                <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+            </div>  
+            <div>
+                <h2 class = "recipe-title">${meal.strMeal}</h2>
+                <p class = "recipe-category">${meal.strCategory}</p>
+            </div>
+          
+
+        
+        
         <div class = "recipe-instruct">
             <h3>Instructions:</h3>
             <p>${meal.strInstructions}</p>
-            
         </div>
-        <div class = "recipe-meal-img">
-            <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
-        </div>
+
         <div class = "recipe-link">
         <a href = "${meal.strYoutube}" target = "_blank">Watch Video</a>
         </div>
@@ -68,5 +80,6 @@ function showDetails(meal) {
 }
 
 detailCloseBtn.addEventListener('click', () => {
+    document.body.style.overflow = 'auto'
     mealDetailsContainer.parentElement.classList.remove('showRecipe');
 })
