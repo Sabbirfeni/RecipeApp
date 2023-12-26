@@ -3,6 +3,7 @@ let searchField = document.querySelector('.search-control');
 let mealListContainer = document.getElementById('meal');
 let mealDetailsContainer = document.getElementById('mealDetailContainer');
 let detailCloseBtn = document.getElementById('recipe-close-btn');
+let message = document.querySelector('.message');
 
 searchField.addEventListener('keydown', (e) => {
     if(e.key === 'Enter') {
@@ -13,12 +14,13 @@ mealListContainer.addEventListener('click', getMealDetails);
 
 function getMealList() {
     let searchValue = document.getElementById('searchInput').value.trim();
-   
+    document.querySelector('.initial-banner').style.display = 'none'
     fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchValue}`)
     .then(response => response.json())
     .then(data => {
         let html = '';
         if(data.meals) {
+            message.style.display = 'none'
             data.meals.forEach(meal => {
                 html += `<div class = "meal-item" data-id='${meal.idMeal}'>
                 <div class = "meal-img">
@@ -26,12 +28,12 @@ function getMealList() {
                 </div>
                 <div class = "meal-name">
                   <h4>${meal.strMeal}</h4>
-                  <a href = "#" class = "recipe-btn">Get Recipe</a>
+                  <a href = "#" class = "recipe-btn">Get Instruction</a>
                 </div>
               </div>`
             });
         } else {
-            html = 'Sorry! we didn"t find any meal :(';
+            message.style.display = 'block';
         }
         mealListContainer.innerHTML = html;
     })
